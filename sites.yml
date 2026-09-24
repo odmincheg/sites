@@ -26,17 +26,17 @@ sites:
     theme_dir: testandrew                  # wp-content/themes/<theme_dir>
     staging:
       mode: fresh
-    prod:
-      driver: ssh
-      host: test.thedevops.pro
-      port: 22
-      user: deploy                         # створюється prod/setup-deploy-user.sh, не root
-      wp_root: /var/www/test.thedevops.pro/public_html
-      url: https://test.thedevops.pro
-      keep_releases: 5
-      healthcheck: [/]
-      post_deploy:
-        - wp cache flush
+    # prod:
+    #   driver: ssh
+    #   host: test.thedevops.pro
+    #   port: 22
+    #   user: deploy                         # створюється prod/setup-deploy-user.sh, не root
+    #   wp_root: /var/www/test.thedevops.pro/public_html
+    #   url: https://test.thedevops.pro
+    #   keep_releases: 5
+    #   healthcheck: [/]
+    #   post_deploy:
+    #     - wp cache flush
 
   # --- приклад: репо не лише з темою, інший сервер, свій сертифікат ---
   # bigclient:
