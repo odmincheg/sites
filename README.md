@@ -1,37 +1,37 @@
-# sites — project registry
+# sites — реєстр проєктів
 
-`sites.yml` describes where each project's staging lives and where production is deployed.
-The repo is private; the control server pulls it read-only with a deploy token (`/etc/wpd/sites-repo`).
+`sites.yml` описує, де живе staging кожного проєкту і куди деплоїться прод.
+Репо приватне; control-сервер тягне його read-only deploy-токеном (`/etc/wpd/sites-repo`).
 
-## Keys
+## Ключі
 
-| Key | Level | Meaning |
+| Ключ | Де | Значення |
 | --- | --- | --- |
-| `staging_domain` | root | Domain for `<slug>.<staging_domain>` |
-| `staging_servers.<name>.backend` | server | `native` or `docker` |
-| `staging_servers.<name>.host` | server | IP/host the control server uses for SSH |
-| `staging_servers.<name>.public_ip` | server | Public IP for DNS records |
-| `staging_servers.<name>.php` | server | Installed PHP versions |
-| `defaults.*` | root | Values for sites not listed under `sites:` or that don't override a key |
-| `sites.<repo>.slug` | site | Subdomain when the repo name doesn't fit (≤ 28 chars, `a-z0-9-`) |
-| `sites.<repo>.theme_dir` | site | Theme folder, defaults to the repo name |
-| `sites.<repo>.php` | site | PHP version (must be in the server's `php` list) |
-| `sites.<repo>.wp_version` | site | `fresh` only; latest if omitted |
-| `sites.<repo>.staging.server` | site | A name from `staging_servers` |
-| `sites.<repo>.staging.mode` | site | `fresh` or `clone-prod` |
-| `sites.<repo>.staging.ssl_cert` | site | `true` → DNS only + Let's Encrypt |
-| `sites.<repo>.staging.uploads` | site | `proxy` → missing uploads are served from `prod.url` |
-| `sites.<repo>.paths` | site | `repo_folder: wp-content/...`; without it the whole repo is the theme |
-| `sites.<repo>.prod` | site | Without this key a push to `main` deploys nothing |
-| `prod.driver` | prod | `ssh` (`ftp` — later) |
-| `prod.wp_root` | prod | WordPress root on production |
-| `prod.healthcheck` | prod | Paths that must return 200 without a fatal error |
-| `prod.post_deploy` | prod | Commands run after the switch (in `wp_root`) |
+| `staging_domain` | корінь | Домен для `<slug>.<staging_domain>` |
+| `staging_servers.<name>.backend` | сервер | `native` або `docker` |
+| `staging_servers.<name>.host` | сервер | IP/хост для SSH від control |
+| `staging_servers.<name>.public_ip` | сервер | Публічний IP для DNS-записів |
+| `staging_servers.<name>.php` | сервер | Встановлені версії PHP |
+| `defaults.*` | корінь | Значення для сайтів, яких немає в `sites:` або які не перевизначили ключ |
+| `sites.<repo>.slug` | сайт | Піддомен, якщо назва репо не підходить (≤ 28 символів, `a-z0-9-`) |
+| `sites.<repo>.theme_dir` | сайт | Тека теми, за замовчуванням = назва репо |
+| `sites.<repo>.php` | сайт | Версія PHP (має бути в `php` сервера) |
+| `sites.<repo>.wp_version` | сайт | Лише для `fresh`; без неї latest |
+| `sites.<repo>.staging.server` | сайт | Ім'я з `staging_servers` |
+| `sites.<repo>.staging.mode` | сайт | `fresh` або `clone-prod` |
+| `sites.<repo>.staging.ssl_cert` | сайт | `true` → DNS only + Let's Encrypt |
+| `sites.<repo>.staging.uploads` | сайт | `proxy` → відсутні uploads з `prod.url` |
+| `sites.<repo>.paths` | сайт | `тека_в_репо: wp-content/...`; без ключа все репо = тема |
+| `sites.<repo>.prod` | сайт | Без цього ключа push у `main` нічого не деплоїть |
+| `prod.driver` | прод | `ssh` (`ftp` — пізніше) |
+| `prod.wp_root` | прод | Корінь WordPress на проді |
+| `prod.healthcheck` | прод | Шляхи, які мають віддати 200 без fatal |
+| `prod.post_deploy` | прод | Команди після перемикання (виконуються в `wp_root`) |
 
-## New project
+## Новий проєкт
 
-1. For an existing site, a project with production, or a site not on the default server — add the entry here **first**.
-2. Create the repo in `devphase` and protect `main`.
+1. Для існуючого сайту, проєкту з продом або сайту не на сервері за замовчуванням — **спершу** запис тут.
+2. Створити репо в `devphase`, захистити `main`.
 3. *Settings → CI/CD → General pipelines → CI/CD configuration file* = `wp-theme.yml@team-devphase/ci-templates:stable`.
-4. Enable the Slack integration.
-5. Push to `develop`.
+4. Увімкнути Slack-інтеграцію.
+5. Push у `develop`.
