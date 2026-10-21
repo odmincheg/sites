@@ -11,7 +11,7 @@ staging_servers:
     php: ["7.4", "8.2", "8.3"]             # FPM versions actually running on stg1 (audit 2026-09-23)
 
 defaults:
-  type: wordpress                          # wordpress | drupal | laravel | static (only wordpress is implemented so far)
+  type: wordpress                          # wordpress | static (drupal, laravel: not implemented yet)
   php: "8.2"
   staging:
     server: stg1                           # default server (wildcard *.devphase.io, DNS only)
@@ -42,6 +42,10 @@ sites:
       healthcheck: [/]
       post_deploy:
         - wp cache flush
+
+  # --- static site test repo: devphase/pipeline-test-static ---
+  # pipeline-test-static:
+  #   type: static
 
   # --- example: repo with more than the theme, another server, own certificate ---
   # bigclient:
