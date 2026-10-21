@@ -1,27 +1,32 @@
-# Реєстр сайтів і staging-серверів.
-# Читає лише control-сервер (wpd). Зміни набирають чинності з наступної джоби пайплайну.
+# Registry of sites and staging servers.
+# Read only by the control server (wpd). Changes take effect from the next pipeline job.
 
 staging_domain: devphase.io        # <slug>.devphase.io
 
 staging_servers:
-  stg1:                                    # control-сервер
-    backend: native                        # nginx + php-fpm + MySQL як сервіси
-    host: 127.0.0.1                        # SSH від control; stg1 і є control
-    public_ip: 162.243.160.209             # для DNS-записів
-    php: ["7.4", "8.2", "8.3"]             # FPM, що реально запущені на stg1 (аудит 2026-09-23)
+  stg1:                                    # control server
+    backend: native                        # nginx + php-fpm + MySQL as services
+    host: 127.0.0.1                        # SSH from control; stg1 is the control server itself
+    public_ip: 162.243.160.209             # for DNS records
+    php: ["7.4", "8.2", "8.3"]             # FPM versions actually running on stg1 (audit 2026-09-23)
 
 defaults:
+  type: wordpress                          # wordpress | static | drupal (laravel: not implemented yet)
   php: "8.2"
   staging:
-    server: stg1                           # сервер за замовчуванням (wildcard *.devphase.io, DNS only)
+    server: stg1                           # default server (wildcard *.devphase.io, DNS only)
     mode: fresh                            # fresh | clone-prod
-    ssl_cert: true                         # true: DNS only (wildcard * уже сірий) + Let's Encrypt, як у всіх існуючих сайтів
-                                           # false: окремий Proxied-запис + Cloudflare Origin CA
-    uploads: none                          # none | proxy (відсутні uploads беруться з prod.url)
-    deactivate_plugins: [wordfence, wp-mail-smtp, updraftplus, litespeed-cache, w3-total-cache, wp-rocket]
+    ssl_cert: true                         # true: DNS only (wildcard * is already grey) + Let's Encrypt, like all existing sites
+                                           # false: separate Proxied record + Cloudflare Origin CA
+    uploads: none                          # none | proxy (missing uploads are fetched from prod.url)
+    # deactivated after a prod DB import (clone-prod): security/cache plugins and every mailer that sends
+    # through an HTTP API instead of PHPMailer, which would bypass Mailpit
+    deactivate_plugins: [wordfence, updraftplus, litespeed-cache, w3-total-cache, wp-rocket,
+                         wp-mail-smtp, sparkpost, post-smtp, fluent-smtp, easy-wp-smtp, mailgun,
+                         wp-ses, sendgrid-email-delivery-simplified, mailpoet]
 
 sites:
-  # --- пілот ---
+  # --- pilot ---
   testandrew:                              # = gitlab.com/devphase/testandrew → testandrew.devphase.io
     theme_dir: testandrew                  # wp-content/themes/<theme_dir>
     staging:
@@ -30,7 +35,7 @@ sites:
       driver: ssh
       host: test.thedevops.pro
       port: 22
-      user: deploy                         # створюється prod/setup-deploy-user.sh, не root
+      user: deploy                         # created by prod/setup-deploy-user.sh, not root
       wp_root: /var/www/test.thedevops.pro/public_html
       url: https://test.thedevops.pro
       keep_releases: 5
@@ -38,12 +43,23 @@ sites:
       post_deploy:
         - wp cache flush
 
-  # --- приклад: репо не лише з темою, інший сервер, свій сертифікат ---
+  # --- drupal test repo: devphase/pipeline-test-drupal (Drupal 11 needs PHP 8.3) ---
+  # pipeline-test-drupal:
+  #   type: drupal
+  #   php: "8.3"
+  #   drupal:
+  #     install_profile: wpd_test_profile    # used only when the database is empty (first deploy); default: minimal
+
+  # --- static site test repo: devphase/pipeline-test-static ---
+  # pipeline-test-static:
+  #   type: static
+
+  # --- example: repo with more than the theme, another server, own certificate ---
   # bigclient:
   #   php: "8.3"
   #   staging:
-  #     server: stg2                       # потрібен проксований A-запис bigclient → stg2
-  #     ssl_cert: false                    # Proxied + Origin CA (Origin CA має бути на stg2)
+  #     server: stg2                       # needs a proxied A record bigclient → stg2
+  #     ssl_cert: false                    # Proxied + Origin CA (Origin CA must be present on stg2)
   #     mode: clone-prod
   #     uploads: proxy
   #   paths:
