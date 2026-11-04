@@ -44,11 +44,11 @@ sites:
         - wp cache flush
 
   # --- drupal test repo: devphase/pipeline-test-drupal (Drupal 11 needs PHP 8.3) ---
-  # pipeline-test-drupal:
-  #   type: drupal
-  #   php: "8.3"
-  #   drupal:
-  #     install_profile: wpd_test_profile    # used only when the database is empty (first deploy); default: minimal
+  pipeline-test-drupal:
+    type: drupal
+    php: "8.3"
+    drupal:
+      install_profile: wpd_test_profile    # used only when the database is empty (first deploy); default: minimal
 
   # --- static site test repo: devphase/pipeline-test-static ---
   pipeline-test-static:
