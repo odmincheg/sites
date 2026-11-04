@@ -39,11 +39,11 @@ sites:
       mode: fresh
     prod:
       driver: ssh
-      host: test.thedevops.pro
+      host: test.devphase.io
       port: 22
       user: deploy                         # created by prod/setup-deploy-user.sh, not root
-      wp_root: /var/www/test.thedevops.pro/public_html
-      url: https://test.thedevops.pro
+      wp_root: /var/www/test.devphase.io/public_html
+      url: https://test.devphase.io
       keep_releases: 5
       healthcheck: [/]
       post_deploy:
