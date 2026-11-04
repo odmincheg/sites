@@ -43,6 +43,17 @@ sites:
       post_deploy:
         - wp cache flush
 
+  # --- commas: devphase/commas-2025, branch "staging" (CI/CD variable WPD_STAGING_BRANCH=staging) ---
+  # migrated 2026-11 from the legacy vhost commas.devphase.io; prod: https://usecommas.com (WordPress 7.1.2)
+  commas-2025:
+    slug: commas                             # → commas.devphase.io
+    php: "8.2"
+    wp_version: "7.1.2"                      # same as prod, so the imported database matches the core
+    paths:
+      wp-content/themes/skeleton-wp: wp-content/themes/skeleton-wp
+      wp-content/plugins/starter: wp-content/plugins/starter
+      static: static                         # served from the WordPress root, like on prod
+
   # --- drupal test repo: devphase/pipeline-test-drupal (Drupal 11 needs PHP 8.3) ---
   pipeline-test-drupal:
     type: drupal
