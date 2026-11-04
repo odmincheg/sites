@@ -23,7 +23,13 @@ defaults:
     # through an HTTP API instead of PHPMailer, which would bypass Mailpit
     deactivate_plugins: [wordfence, updraftplus, litespeed-cache, w3-total-cache, wp-rocket,
                          wp-mail-smtp, sparkpost, post-smtp, fluent-smtp, easy-wp-smtp, mailgun,
-                         wp-ses, sendgrid-email-delivery-simplified, mailpoet]
+                         wp-ses, sendgrid-email-delivery-simplified, mailpoet,
+                         duo-wordpress, duo-wordpress1, duo-universal, two-factor, wp-2fa, cloudflare,
+                         wp-fastest-cache, fast-velocity-minify, autoptimize, wp-optimize,
+                         all-in-one-wp-migration, wp-all-export]
+  # Drupal modules disabled after a prod DB import (2FA, mailers, captcha, analytics)
+  drupal:
+    disable_modules: [tfa, smtp, symfony_mailer, mailsystem, securelogin, captcha, recaptcha, google_analytics]
 
 sites:
   # --- pilot ---
