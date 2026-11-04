@@ -54,6 +54,16 @@ sites:
       wp-content/plugins/starter: wp-content/plugins/starter
       static: static                         # served from the WordPress root, like on prod
 
+  # --- truepoint: devphase/truepoint-wp, branch "staging" (CI/CD variable WPD_STAGING_BRANCH=staging) ---
+  # migrated 2026-11 from the legacy truepoint.devphase.io; prod: https://truepointwealth.com (WordPress 7.1.2, prefix tp_)
+  truepoint-wp:
+    slug: truepoint                          # → truepoint.devphase.io
+    php: "8.2"
+    wp_version: "7.1.2"
+    paths:
+      wp-content/themes/truepoint: wp-content/themes/truepoint
+      static: static
+
   # --- drupal test repo: devphase/pipeline-test-drupal (Drupal 11 needs PHP 8.3) ---
   pipeline-test-drupal:
     type: drupal
