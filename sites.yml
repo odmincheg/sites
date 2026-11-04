@@ -51,8 +51,8 @@ sites:
   #     install_profile: wpd_test_profile    # used only when the database is empty (first deploy); default: minimal
 
   # --- static site test repo: devphase/pipeline-test-static ---
-  # pipeline-test-static:
-  #   type: static
+  pipeline-test-static:
+    type: static
 
   # --- example: repo with more than the theme, another server, own certificate ---
   # bigclient:
