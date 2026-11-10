@@ -70,6 +70,21 @@ sites:
       wp-content/themes/truepoint: wp-content/themes/truepoint
       static: static
 
+  # --- gcfdn: devphase/gcfdn, branch develop ---
+  # prod: WordPress multisite gcfdn.org (WordPress 7.0.4, prefix gcf_); staging serves only womensfund.gcfdn.org
+  # (blog_id 2). Imported 2026-11 as the whole multisite database; the multisite setup (domains, wp-config
+  # constants, network plugins) is maintained by hand on stg1 — see /root/womensfund-plugins.sh.
+  gcfdn:
+    slug: womensfund                         # → womensfund.devphase.io
+    php: "8.3"
+    wp_version: "7.0.4"
+    paths:
+      wp-content/themes/gcf: wp-content/themes/gcf
+      wp-content/plugins/angelleye-gravity-forms-braintree: wp-content/plugins/angelleye-gravity-forms-braintree
+      wp-content/plugins/gcf-bb-additional-modules: wp-content/plugins/gcf-bb-additional-modules
+      wp-content/plugins/gcf-plaid-grantee-data-confirmation: wp-content/plugins/gcf-plaid-grantee-data-confirmation
+      wp-content/plugins/gravityformspaypalpaymentspro: wp-content/plugins/gravityformspaypalpaymentspro
+
   # --- drupal test repo: devphase/pipeline-test-drupal (Drupal 11 needs PHP 8.3) ---
   pipeline-test-drupal:
     type: drupal
